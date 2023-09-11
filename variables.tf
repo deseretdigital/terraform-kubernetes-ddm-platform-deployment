@@ -176,11 +176,9 @@ variable "roles" {
 variable "project" {
   description = "The default project."
   type        = string
-  default     = "ddm-platform"
 }
 
 variable "gke_cluster_name" {
   description = "The name of the GKE cluster where the resources will be deployed"
   type        = string
-  default     = "ddm-platform-us-west3"
 }
