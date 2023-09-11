@@ -53,6 +53,7 @@ resource "kubernetes_deployment" "platform_deployment" {
       }
 
       spec {
+        service_account_name = module.deployment_workload_identity.k8s_service_account_name
         container {
           name  = var.application_name
           image = var.container_image
@@ -143,6 +144,7 @@ resource "kubernetes_deployment" "platform_deployment" {
             success_threshold     = local.readiness_probe.success_threshold
           }
         }
+
       }
     }
 
