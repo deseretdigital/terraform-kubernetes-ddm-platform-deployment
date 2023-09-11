@@ -166,3 +166,21 @@ variable "deployment_service_type" {
   type        = string
   default     = "ClusterIP"
 }
+
+variable "roles" {
+  description = "The roles to apply to the service account for the deployment"
+  type        = list(string)
+  default     = ["roles/secretmanager.secretAccessor"]
+}
+
+variable "project" {
+  description = "The default project."
+  type        = string
+  default     = "ddm-platform"
+}
+
+variable "gke_cluster_name" {
+  description = "The name of the GKE cluster where the resources will be deployed"
+  type        = string
+  default     = "ddm-platform-us-west3"
+}
