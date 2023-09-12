@@ -69,6 +69,22 @@ resource "kubernetes_deployment" "platform_deployment" {
             }
           }
 
+          ########################################## 
+          # Dynamic secret environment variables
+          ##########################################
+          dynamic "env" {
+            for_each = var.secret_env_vars
+            content {
+              name = env.value.name
+              value_from {
+                secret_key_ref {
+                  name = kubernetes_secret.kubernetes_secrets.metadata[0].name
+                  key  = env.value.name
+                }
+              }
+            }
+          }
+
           ##########################################
           # Static environment variables
           ##########################################
