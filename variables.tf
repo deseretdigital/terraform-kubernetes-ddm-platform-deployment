@@ -115,21 +115,14 @@ variable "resources" {
 
 variable "env_vars" {
   description = "List of environment variables for the deployment"
-  type = list(object({
-    name  = string
-    value = string
-  }))
-  default = []
+  type        = map(any)
+  default     = {}
 }
 
 variable "secret_env_vars" {
   description = "List of environment that are set as secret variables for the deployment. These are stored in K8s and not in GSM"
-  type = list(object({
-    name  = string
-    value = string
-  }))
-  default   = []
-  sensitive = true
+  type        = map(any)
+  default     = {}
 }
 
 variable "min_replicas" {
