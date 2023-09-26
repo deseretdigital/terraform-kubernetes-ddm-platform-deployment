@@ -9,12 +9,10 @@
 # the secret within GitHub Actions.
 #
 # Note: We don't want to use these types of secrets in most cases. This exists 
-# to handle legacy applications that are not yet ready to use Google Secret Manager.
+# to handle legacy applications that are not yet ready to use Google Secret Manager
 
-locals {
-  secrets_map = { for secret in var.secret_env_vars : secret.name => secret.value }
-}
-
+// We need to always create a secret, even if there are no secret env vars
+// This is so we
 resource "kubernetes_secret" "kubernetes_secrets" {
   # Create Secrets block only when we have secrets
   count = length(var.secret_env_vars) > 0 ? 1 : 0
@@ -24,5 +22,5 @@ resource "kubernetes_secret" "kubernetes_secrets" {
     namespace = data.kubernetes_namespace.deployment_namespace.id
   }
 
-  data = local.secrets_map
+  data = var.secret_env_vars
 }

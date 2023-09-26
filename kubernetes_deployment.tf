@@ -64,8 +64,8 @@ resource "kubernetes_deployment" "platform_deployment" {
           dynamic "env" {
             for_each = var.env_vars
             content {
-              name  = env.value.name
-              value = env.value.value
+              name  = env.key
+              value = env.value
             }
           }
 
@@ -75,11 +75,11 @@ resource "kubernetes_deployment" "platform_deployment" {
           dynamic "env" {
             for_each = var.secret_env_vars
             content {
-              name = env.value.name
+              name = env.key
               value_from {
                 secret_key_ref {
-                  name = kubernetes_secret.kubernetes_secrets.metadata[0].name
-                  key  = env.value.name
+                  name = kubernetes_secret.kubernetes_secrets[0].metadata[0].name
+                  key  = env.key
                 }
               }
             }
