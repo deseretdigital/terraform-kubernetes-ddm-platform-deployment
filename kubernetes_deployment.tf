@@ -100,6 +100,18 @@ resource "kubernetes_deployment" "platform_deployment" {
             }
           }
 
+          # Nodejs uses the DD_TRACE_AGENT_HOSTNAME environment variable to set 
+          # the agent instead of DD_AGENT_HOST. We can set both without any negative effects.
+          env {
+            name = "DD_TRACE_AGENT_HOSTNAME"
+
+            value_from {
+              field_ref {
+                field_path = "status.hostIP"
+              }
+            }
+          }
+
           env {
             name  = "DD_SERVICE"
             value = "ddm-platform-${var.application_name}"
