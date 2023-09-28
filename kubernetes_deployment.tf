@@ -17,7 +17,7 @@ locals {
   liveness_probe = merge(local.liveness_probe_defaults, var.liveness_probe)
 
   readiness_probe_defaults = {
-    path                  = "/livez"
+    path                  = "/readyz"
     port                  = var.container_port
     initial_delay_seconds = 10
     period_seconds        = 10
@@ -92,6 +92,18 @@ resource "kubernetes_deployment" "platform_deployment" {
           # Set the DD_AGENT_HOST environment variable to the host IP address.
           env {
             name = "DD_AGENT_HOST"
+
+            value_from {
+              field_ref {
+                field_path = "status.hostIP"
+              }
+            }
+          }
+
+          # Nodejs uses the DD_TRACE_AGENT_HOSTNAME environment variable to set 
+          # the agent instead of DD_AGENT_HOST. We can set both without any negative effects.
+          env {
+            name = "DD_TRACE_AGENT_HOSTNAME"
 
             value_from {
               field_ref {
