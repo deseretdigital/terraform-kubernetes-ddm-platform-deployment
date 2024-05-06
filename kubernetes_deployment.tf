@@ -54,6 +54,12 @@ resource "kubernetes_deployment" "platform_deployment" {
 
       spec {
         service_account_name = module.deployment_workload_identity.k8s_service_account_name
+
+        host_aliases {
+          hostnames = ["api3.ksl.com"]
+          ip        = "10.13.20.163"
+        }
+
         container {
           name  = var.application_name
           image = var.container_image
