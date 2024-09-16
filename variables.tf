@@ -128,13 +128,13 @@ variable "secret_env_vars" {
 variable "min_replicas" {
   description = "Minimum number of replicas for the deployment"
   type        = number
-  default     = 1
+  default     = 3
 }
 
 variable "max_replicas" {
   description = "Maximum number of replicas for the deployment"
   type        = number
-  default     = 1
+  default     = 5
 }
 
 variable "autoscaler" {
