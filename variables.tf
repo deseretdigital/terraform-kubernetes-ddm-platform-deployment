@@ -112,7 +112,6 @@ variable "resources" {
   }
 }
 
-
 variable "env_vars" {
   description = "List of environment variables for the deployment"
   type        = map(any)

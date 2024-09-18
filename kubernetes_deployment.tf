@@ -39,7 +39,7 @@ resource "kubernetes_deployment" "platform_deployment" {
   }
 
   spec {
-    replicas = 1
+    replicas = var.min_replicas
 
     selector {
       match_labels = {
