@@ -41,6 +41,12 @@ variable "namespace" {
   default     = "internal"
 }
 
+variable "wait_for_rollout" {
+  description = "Wait for the rollout of the deployment to complete."
+  type        = bool
+  default     = true
+}
+
 
 variable "liveness_probe" {
   description = "Configuration for liveness probe"

@@ -38,6 +38,8 @@ resource "kubernetes_deployment" "platform_deployment" {
     labels = var.labels
   }
 
+  wait_for_rollout = var.wait_for_rollout
+
   spec {
     replicas = var.min_replicas
 

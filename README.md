@@ -3,7 +3,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_google"></a> [google](#requirement\_google) | ~> 6.2.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.23 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.32.0 |
 
 ## Providers
 
@@ -42,8 +42,8 @@
 | <a name="input_gke_cluster_name"></a> [gke\_cluster\_name](#input\_gke\_cluster\_name) | The name of the GKE cluster where the resources will be deployed | `string` | n/a | yes |
 | <a name="input_labels"></a> [labels](#input\_labels) | The labels to apply to the deployment | `map(string)` | n/a | yes |
 | <a name="input_liveness_probe"></a> [liveness\_probe](#input\_liveness\_probe) | Configuration for liveness probe | <pre>object({<br>    path                  = optional(string)<br>    port                  = optional(number)<br>    initial_delay_seconds = optional(number)<br>    period_seconds        = optional(number)<br>    timeout_seconds       = optional(number)<br>    failure_threshold     = optional(number)<br>    success_threshold     = optional(number)<br>  })</pre> | <pre>{<br>  "failure_threshold": 3,<br>  "initial_delay_seconds": 10,<br>  "path": "/livez",<br>  "period_seconds": 10,<br>  "port": 8080,<br>  "success_threshold": 1,<br>  "timeout_seconds": 2<br>}</pre> | no |
-| <a name="input_max_replicas"></a> [max\_replicas](#input\_max\_replicas) | Maximum number of replicas for the deployment | `number` | `1` | no |
-| <a name="input_min_replicas"></a> [min\_replicas](#input\_min\_replicas) | Minimum number of replicas for the deployment | `number` | `1` | no |
+| <a name="input_max_replicas"></a> [max\_replicas](#input\_max\_replicas) | Maximum number of replicas for the deployment | `number` | `5` | no |
+| <a name="input_min_replicas"></a> [min\_replicas](#input\_min\_replicas) | Minimum number of replicas for the deployment | `number` | `3` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | The Kubernetes namespace where the deployment will be created | `string` | `"internal"` | no |
 | <a name="input_project"></a> [project](#input\_project) | The default project. | `string` | n/a | yes |
 | <a name="input_readiness_probe"></a> [readiness\_probe](#input\_readiness\_probe) | Configuration for readiness probe | <pre>object({<br>    path                  = optional(string)<br>    port                  = optional(number)<br>    initial_delay_seconds = optional(number)<br>    period_seconds        = optional(number)<br>    timeout_seconds       = optional(number)<br>    failure_threshold     = optional(number)<br>    success_threshold     = optional(number)<br>  })</pre> | <pre>{<br>  "failure_threshold": 3,<br>  "initial_delay_seconds": 10,<br>  "path": "/readyz",<br>  "period_seconds": 10,<br>  "port": 8080,<br>  "success_threshold": 1,<br>  "timeout_seconds": 2<br>}</pre> | no |
@@ -51,6 +51,7 @@
 | <a name="input_roles"></a> [roles](#input\_roles) | The roles to apply to the service account for the deployment | `list(string)` | <pre>[<br>  "roles/secretmanager.secretAccessor"<br>]</pre> | no |
 | <a name="input_secret_env_vars"></a> [secret\_env\_vars](#input\_secret\_env\_vars) | List of environment that are set as secret variables for the deployment. These are stored in K8s and not in GSM | `map(any)` | `{}` | no |
 | <a name="input_team"></a> [team](#input\_team) | The team that owns the deployment | `string` | n/a | yes |
+| <a name="input_wait_for_rollout"></a> [wait\_for\_rollout](#input\_wait\_for\_rollout) | Wait for the rollout of the deployment to complete. | `bool` | `true` | no |
 
 ## Outputs
 
