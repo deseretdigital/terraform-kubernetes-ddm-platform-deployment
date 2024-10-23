@@ -59,7 +59,7 @@ resource "kubernetes_deployment" "platform_deployment" {
 
         host_aliases {
           hostnames = ["api3.ksl.com", "cars.ksl.com"]
-          ip        = "10.13.20.163"
+          ip        = "10.13.20.184"
         }
 
         container {
