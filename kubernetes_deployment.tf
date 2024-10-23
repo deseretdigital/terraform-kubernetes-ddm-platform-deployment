@@ -58,8 +58,8 @@ resource "kubernetes_deployment" "platform_deployment" {
         service_account_name = module.deployment_workload_identity.k8s_service_account_name
 
         host_aliases {
-          hostnames = var.host_aliases.hostnames
-          ip        = var.host_aliases.ip
+          hostnames = var.host_alias.hostnames
+          ip        = var.host_alias.ip
         }
 
         container {

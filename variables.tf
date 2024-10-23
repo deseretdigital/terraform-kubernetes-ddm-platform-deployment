@@ -25,9 +25,9 @@ variable "container_port" {
   default     = 8080
 }
 
-variable "host_aliases" {
+variable "host_alias" {
   description = "The host aliases to apply to the deployment"
-  type        = map(object({
+  type = map(object({
     hostnames = list(string)
     ip        = string
   }))
@@ -37,7 +37,7 @@ variable "host_aliases" {
 variable "labels" {
   description = "The labels to apply to the deployment"
   type        = map(string)
-  default = {  }
+  default     = {}
 }
 
 variable "namespace" {
