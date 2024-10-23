@@ -33,6 +33,7 @@ variable "team" {
 variable "labels" {
   description = "The labels to apply to the deployment"
   type        = map(string)
+  default = {  }
 }
 
 variable "namespace" {
