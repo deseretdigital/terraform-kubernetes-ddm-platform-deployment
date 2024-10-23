@@ -31,10 +31,7 @@ variable "host_aliases" {
     hostnames = list(string)
     ip        = string
   }))
-  default = {
-    hostnames = ["api3.ksl.com", "cars.ksl.com"]
-    ip        = "10.13.20.184"
-  }
+  default = {}
 }
 
 variable "labels" {
