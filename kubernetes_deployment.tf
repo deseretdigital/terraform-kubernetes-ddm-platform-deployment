@@ -58,8 +58,8 @@ resource "kubernetes_deployment" "platform_deployment" {
         service_account_name = module.deployment_workload_identity.k8s_service_account_name
 
         host_aliases {
-          hostnames = ["api3.ksl.com", "cars.ksl.com"]
-          ip        = "10.13.20.184"
+          hostnames = var.host_aliases.hostnames
+          ip        = var.host_aliases.ip
         }
 
         container {
