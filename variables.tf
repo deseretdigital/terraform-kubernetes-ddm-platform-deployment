@@ -25,20 +25,30 @@ variable "container_port" {
   default     = 8080
 }
 
-variable "team" {
-  description = "The team that owns the deployment"
-  type        = string
+variable "host_alias" {
+  description = "The host aliases to apply to the deployment"
+  type = map(object({
+    hostnames = list(string)
+    ip        = string
+  }))
+  default = {}
 }
 
 variable "labels" {
   description = "The labels to apply to the deployment"
   type        = map(string)
+  default     = {}
 }
 
 variable "namespace" {
   description = "The Kubernetes namespace where the deployment will be created"
   type        = string
   default     = "internal"
+}
+
+variable "team" {
+  description = "The team that owns the deployment"
+  type        = string
 }
 
 variable "wait_for_rollout" {

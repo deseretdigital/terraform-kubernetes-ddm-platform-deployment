@@ -1,0 +1,87 @@
+name: Tag Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+    release-tag:
+        runs-on: ubuntu-latest
+        if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+        name: 'Create Release Tag'
+        outputs:
+            RELEASE_TAG: ${{ steps.tag_version.outputs.new_tag }}
+        steps:
+            - uses: actions/checkout@v4
+            - name: Release Tag
+              id: tag_version
+              uses: mathieudutour/github-tag-action@v6.2
+              with:
+                github_token: ${{ secrets.GITHUB_TOKEN }}
+                tag_prefix: ''
+
+    create-release:
+        name: 'Create Release'
+        runs-on: ubuntu-latest
+        needs: ['release-tag']
+        steps:
+            - name: 'Checkout'
+              uses: 'actions/checkout@v4'
+
+            - name: Create a GitHub release
+              uses: ncipollo/release-action@v1
+              with:
+                tag: ${{ needs.release-tag.outputs.RELEASE_TAG }}
+                name: Release ${{ needs.release-tag.outputs.RELEASE_TAG }}
+                generateReleaseNotes: true
+
+    release-notifier:
+      runs-on: ubuntu-latest
+      needs: ['release-tag', 'create-release']
+      name: 'Release Notifier'
+      steps:
+        - name: Send Notification
+          uses: slackapi/slack-github-action@v1.27.0
+          env:
+            SLACK_BOT_TOKEN: ${{ secrets.RELEASE_SLACKBOT_TOKEN }}
+          with:
+            channel-id: release
+            payload: |
+              {
+                  "blocks": [
+                      {
+                          "type": "header",
+                          "text": {
+                              "type": "plain_text",
+                              "text": ":terraform: ${{github.event.repository.name}} release",
+                              "emoji": true
+                          }
+                      },
+                      {
+                          "type": "section",
+                          "text": {
+                              "type": "mrkdwn",
+                              "text": "*${{github.event.repository.name}}* release."
+                          },
+                          "accessory": {
+                              "type": "button",
+                              "text": {
+                                  "type": "plain_text",
+                                  "text": "${{needs.release-tag.outputs.RELEASE_TAG}}",
+                                  "emoji": true
+                              },
+                              "url": "https://github.com/deseretdigital/${{github.event.repository.name}}/releases/tag/${{needs.release-tag.outputs.RELEASE_TAG}}"
+                          }
+                      },
+                      {
+                          "type": "context",
+                          "elements": [
+                              {
+                                  "type": "mrkdwn",
+                                  "text": "_This is an automated message. It does not indicate the deploy was successful, and it will not post here if it has failed. Please check the action run for more details._"
+                              }
+                          ]
+                      }
+                  ]
+              }
