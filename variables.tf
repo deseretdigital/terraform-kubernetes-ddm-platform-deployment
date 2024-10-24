@@ -31,8 +31,14 @@ variable "host_alias" {
     hostnames = list(string)
     ip        = string
   }))
-  default = {}
+  default = {
+    internal_compute_ingress = {
+      hostnames = ["api3.ksl.com", "cars.ksl.com"]
+      ip        = "10.13.20.184"
+    }
+  }
 }
+
 
 variable "labels" {
   description = "The labels to apply to the deployment"
