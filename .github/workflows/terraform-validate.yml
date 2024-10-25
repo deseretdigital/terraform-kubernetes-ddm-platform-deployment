@@ -1,0 +1,37 @@
+name: Validate Terraform
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+    terraform-validate:
+        name: Terraform Validation
+        runs-on: [ubuntu-latest]
+        permissions:
+            contents: 'read'
+            id-token: 'write'
+            pull-requests: 'write'
+        defaults:
+            run:
+                shell: bash
+                working-directory: './'
+        steps:
+            - name: 'Checkout'
+              uses: 'actions/checkout@v4'
+            
+            - name: 'Set Up Terraform'
+              uses: 'hashicorp/setup-terraform@v3'
+              with:
+                terraform_wrapper: false
+
+            - name: 'Initialize Terraform'
+              run: terraform init
+
+            - name: 'Check Terraform Formatting'
+              run: terraform fmt -check -recursive
+
+            - name: 'Validate Terraform'
+              id: validate
+              run: terraform validate -no-color

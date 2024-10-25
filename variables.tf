@@ -27,11 +27,11 @@ variable "container_port" {
 
 variable "host_alias" {
   description = "The host aliases to apply to the deployment"
-  type = map(object({
+  type = object({
     hostnames = list(string)
     ip        = string
-  }))
-  default = {}
+  })
+  default = null
 }
 
 variable "labels" {
