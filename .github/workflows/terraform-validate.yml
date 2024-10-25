@@ -8,7 +8,7 @@ on:
 jobs:
     terraform-validate:
         name: Terraform Validation
-        runs-on: [ubunt-latest]
+        runs-on: [ubunu-latest]
         permissions:
             contents: 'read'
             id-token: 'write'
