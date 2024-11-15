@@ -1,7 +1,7 @@
 resource "kubernetes_cron_job_v1" "cron" {
   metadata {
     name      = "${lower(var.application_name)}-cronjob"
-    namespace = var.namespace
+    namespace = data.kubernetes_namespace.deployment_namespace.id
 
     labels = var.labels
   }
