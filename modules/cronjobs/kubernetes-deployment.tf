@@ -23,7 +23,7 @@ resource "kubernetes_cron_job_v1" "cron" {
           metadata {}
 
           spec {
-            service_account_name = module.kubernetes_workload_identity.k8s_service_account_name
+            service_account_name = module.deployment_workload_identity.k8s_service_account_name
 
             restart_policy = "Never"
 
@@ -51,6 +51,22 @@ resource "kubernetes_cron_job_v1" "cron" {
                 value_from {
                   field_ref {
                     field_path = "status.hostIP"
+                  }
+                }
+              }
+
+              ########################################## 
+              # Dynamic secret environment variables
+              ##########################################
+              dynamic "env" {
+                for_each = var.secret_env_vars
+                content {
+                  name = env.key
+                  value_from {
+                    secret_key_ref {
+                      name = kubernetes_secret.kubernetes_secrets[0].metadata[0].name
+                      key  = env.key
+                    }
                   }
                 }
               }
