@@ -127,3 +127,8 @@ variable "schedule" {
   description = "The schedule for the cronjob"
   type        = string
 }
+
+variable "command" {
+  description = "The command to run in the container"
+  type        = list(string)
+}

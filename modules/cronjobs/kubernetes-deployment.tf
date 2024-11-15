@@ -28,8 +28,9 @@ resource "kubernetes_cron_job_v1" "cron" {
             restart_policy = "Never"
 
             container {
-              name  = lower(var.application_name)
-              image = var.container_image
+              name    = lower(var.application_name)
+              image   = var.container_image
+              command = var.command
 
               # Set the DD_AGENT_HOST environment variable to the host IP address.
               dynamic "env" {
