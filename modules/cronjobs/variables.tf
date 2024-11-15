@@ -128,7 +128,7 @@ variable "schedule" {
   type        = string
 }
 
-variable "command" {
-  description = "The command to run in the container"
-  type        = list(string)
+variable "timezone" {
+  type    = string
+  default = "UTC"
 }
