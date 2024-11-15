@@ -8,6 +8,7 @@ resource "kubernetes_cron_job_v1" "cron" {
 
   spec {
     schedule                      = var.schedule
+    timezone                      = var.timezone
     concurrency_policy            = "Forbid"
     starting_deadline_seconds     = 100
     successful_jobs_history_limit = 5
@@ -28,9 +29,8 @@ resource "kubernetes_cron_job_v1" "cron" {
             restart_policy = "Never"
 
             container {
-              name    = lower(var.application_name)
-              image   = var.container_image
-              command = var.command
+              name  = lower(var.application_name)
+              image = var.container_image
 
               # Set the DD_AGENT_HOST environment variable to the host IP address.
               dynamic "env" {
