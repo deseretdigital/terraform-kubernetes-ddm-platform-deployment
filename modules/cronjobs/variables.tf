@@ -130,5 +130,6 @@ variable "schedule" {
 
 variable "command" {
   description = "The command to run in the container"
-  type        = list(string)
+  type        = string
+  // TODO: Figure out how to handle the case that there is no command
 }
