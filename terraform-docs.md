@@ -2,14 +2,14 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 6.2.0 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.32.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 6.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | ~> 2.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.32.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.33.0 |
 
 ## Modules
 
@@ -40,7 +40,8 @@
 | <a name="input_env_vars"></a> [env\_vars](#input\_env\_vars) | List of environment variables for the deployment | `map(any)` | `{}` | no |
 | <a name="input_expose_as_web_service"></a> [expose\_as\_web\_service](#input\_expose\_as\_web\_service) | Indicates if the deployment should be exposed as a web service | `bool` | `true` | no |
 | <a name="input_gke_cluster_name"></a> [gke\_cluster\_name](#input\_gke\_cluster\_name) | The name of the GKE cluster where the resources will be deployed | `string` | n/a | yes |
-| <a name="input_labels"></a> [labels](#input\_labels) | The labels to apply to the deployment | `map(string)` | n/a | yes |
+| <a name="input_host_alias"></a> [host\_alias](#input\_host\_alias) | The host aliases to apply to the deployment | <pre>object({<br/>    hostnames = list(string)<br/>    ip        = string<br/>  })</pre> | `null` | no |
+| <a name="input_labels"></a> [labels](#input\_labels) | The labels to apply to the deployment | `map(string)` | `{}` | no |
 | <a name="input_liveness_probe"></a> [liveness\_probe](#input\_liveness\_probe) | Configuration for liveness probe | <pre>object({<br/>    path                  = optional(string)<br/>    port                  = optional(number)<br/>    initial_delay_seconds = optional(number)<br/>    period_seconds        = optional(number)<br/>    timeout_seconds       = optional(number)<br/>    failure_threshold     = optional(number)<br/>    success_threshold     = optional(number)<br/>  })</pre> | <pre>{<br/>  "failure_threshold": 3,<br/>  "initial_delay_seconds": 10,<br/>  "path": "/livez",<br/>  "period_seconds": 10,<br/>  "port": 8080,<br/>  "success_threshold": 1,<br/>  "timeout_seconds": 2<br/>}</pre> | no |
 | <a name="input_max_replicas"></a> [max\_replicas](#input\_max\_replicas) | Maximum number of replicas for the deployment | `number` | `5` | no |
 | <a name="input_min_replicas"></a> [min\_replicas](#input\_min\_replicas) | Minimum number of replicas for the deployment | `number` | `3` | no |
@@ -50,6 +51,7 @@
 | <a name="input_resources"></a> [resources](#input\_resources) | Resource requests and limits | <pre>object({<br/>    requests = object({<br/>      cpu    = string<br/>      memory = string<br/>    })<br/>    limits = object({<br/>      cpu    = string<br/>      memory = string<br/>    })<br/>  })</pre> | <pre>{<br/>  "limits": {<br/>    "cpu": "500m",<br/>    "memory": "128Mi"<br/>  },<br/>  "requests": {<br/>    "cpu": "250m",<br/>    "memory": "64Mi"<br/>  }<br/>}</pre> | no |
 | <a name="input_roles"></a> [roles](#input\_roles) | The roles to apply to the service account for the deployment | `list(string)` | <pre>[<br/>  "roles/secretmanager.secretAccessor"<br/>]</pre> | no |
 | <a name="input_secret_env_vars"></a> [secret\_env\_vars](#input\_secret\_env\_vars) | List of environment that are set as secret variables for the deployment. These are stored in K8s and not in GSM | `map(any)` | `{}` | no |
+| <a name="input_service_account_name"></a> [service\_account\_name](#input\_service\_account\_name) | The name of the service account to use for the deployment | `string` | n/a | yes |
 | <a name="input_team"></a> [team](#input\_team) | The team that owns the deployment | `string` | n/a | yes |
 | <a name="input_wait_for_rollout"></a> [wait\_for\_rollout](#input\_wait\_for\_rollout) | Wait for the rollout of the deployment to complete. | `bool` | `true` | no |
 
