@@ -190,3 +190,8 @@ variable "gke_cluster_name" {
   description = "The name of the GKE cluster where the resources will be deployed"
   type        = string
 }
+
+variable "service_account_name" {
+  description = "The name of the service account to use for the deployment"
+  type        = string
+}
