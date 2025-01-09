@@ -152,6 +152,18 @@ variable "max_replicas" {
   default     = 5
 }
 
+variable "max_surge" {
+  description = "Maximum number of pods that can be scheduled above the desired number of pods."
+  type        = string
+  default     = "25%"
+}
+
+variable "max_unavailable" {
+  description = "Maximum number of pods that can be unavailable during the update"
+  type        = string
+  default     = "25%"
+}
+
 variable "autoscaler" {
   description = "Configuration for the autoscaler"
   type = object({
