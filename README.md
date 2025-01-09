@@ -18,6 +18,10 @@ module "ddm-platform-deployment" {
   gke_cluster_name    = {YOUR_CLUSTER_NAME}
   project             = {YOUR_GCP_PROJECT}
 
+  # Optional
+  max_surge           = {YOUR_MAX_PODS_SCHEDULED_DURING_UPDATE}
+  max_unavailable     = {YOUR_MAX_PODS_UNAVAILABLE_DURING_UPDATED}
+
   
 }
 ```

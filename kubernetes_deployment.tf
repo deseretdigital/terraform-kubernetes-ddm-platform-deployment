@@ -43,6 +43,14 @@ resource "kubernetes_deployment" "platform_deployment" {
   spec {
     replicas = var.min_replicas
 
+    # Change the strategy to RollingUpdate to avoid downtime by ensuring max_surge or min_relicas are available before killing the old ones. The defaults are 25%
+    strategy {
+      type = "RollingUpdate"
+      rolling_update {
+        max_surge       = var.max_surge
+        max_unavailable = var.max_unavailable
+      }
+    }
     selector {
       match_labels = {
         app = var.application_name
