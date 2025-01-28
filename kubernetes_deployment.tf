@@ -36,6 +36,9 @@ resource "kubernetes_deployment" "platform_deployment" {
     namespace = data.kubernetes_namespace.deployment_namespace.id
 
     labels = var.labels
+    annotations = {
+      "ad.datadoghq.com/apache.checks" = "{\n  \"apache\": {\n    \"init_config\": {},\n \"instances\": [\n      {\n        \"apache_status_url\": \"http://%%host%%/server-status?auto\"\n }\n    ]\n  }\n} \n"
+    }
   }
 
   wait_for_rollout = var.wait_for_rollout
