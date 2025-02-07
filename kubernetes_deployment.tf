@@ -27,6 +27,7 @@ locals {
   }
   # Merge Local values with user provided values
   readiness_probe = merge(local.readiness_probe_defaults, var.readiness_probe)
+
 }
 
 
@@ -68,6 +69,20 @@ resource "kubernetes_deployment" "platform_deployment" {
         host_aliases {
           hostnames = var.host_alias.hostnames
           ip        = var.host_alias.ip
+        }
+
+        affinity {
+          node_affinity {
+            required_during_scheduling_ignored_during_execution {
+              node_selector_term {
+                match_expressions {
+                  key      = "pool"
+                  operator = "In"
+                  values   = [var.node_pool]
+                }
+              }
+            }
+          }
         }
 
         container {
