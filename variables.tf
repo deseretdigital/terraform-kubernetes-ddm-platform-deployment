@@ -207,3 +207,9 @@ variable "service_account_name" {
   description = "The name of the service account to use for the deployment"
   type        = string
 }
+
+variable "node_pool" {
+  description = "The pool name the workload will run on."
+  type        = string
+  default     = "standard4"
+}
