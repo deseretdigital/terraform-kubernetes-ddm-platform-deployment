@@ -102,6 +102,19 @@ variable "readiness_probe" {
   }
 }
 
+variable "topology_spread" {
+  description = "Configuration for topology spread"
+  type = object({
+    max_skew           = optional(number)
+    topology_key       = optional(string)
+    when_unsatisfiable = optional(string)
+  })
+  default = {
+    max_skew           = 1
+    topology_key       = "kubernetes.io/hostname"
+    when_unsatisfiable = "ScheduleAnyway"
+  }
+}
 
 
 variable "resources" {
