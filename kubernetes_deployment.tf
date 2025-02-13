@@ -28,6 +28,13 @@ locals {
   # Merge Local values with user provided values
   readiness_probe = merge(local.readiness_probe_defaults, var.readiness_probe)
 
+  topology_spread_defaults = {
+    max_skew           = 1
+    topology_key       = "kubernetes.io/hostname"
+    when_unsatisfiable = "ScheduleAnyway"
+  }
+  # Merge Local values with user provided values
+  topology_spread = merge(local.topology_spread_defaults, var.topology_spread)
 }
 
 
@@ -81,6 +88,17 @@ resource "kubernetes_deployment" "platform_deployment" {
                   values   = [var.node_pool]
                 }
               }
+            }
+          }
+        }
+
+        topology_spread_constraint {
+          max_skew           = local.topology_spread.max_skew
+          topology_key       = local.topology_spread.topology_key
+          when_unsatisfiable = local.topology_spread.when_unsatisfiable
+          label_selector {
+            match_labels = {
+              "app.kubernetes.io/instance" = "var.application_name"
             }
           }
         }
