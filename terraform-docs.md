@@ -44,8 +44,11 @@
 | <a name="input_labels"></a> [labels](#input\_labels) | The labels to apply to the deployment | `map(string)` | `{}` | no |
 | <a name="input_liveness_probe"></a> [liveness\_probe](#input\_liveness\_probe) | Configuration for liveness probe | <pre>object({<br/>    path                  = optional(string)<br/>    port                  = optional(number)<br/>    initial_delay_seconds = optional(number)<br/>    period_seconds        = optional(number)<br/>    timeout_seconds       = optional(number)<br/>    failure_threshold     = optional(number)<br/>    success_threshold     = optional(number)<br/>  })</pre> | <pre>{<br/>  "failure_threshold": 3,<br/>  "initial_delay_seconds": 10,<br/>  "path": "/livez",<br/>  "period_seconds": 10,<br/>  "port": 8080,<br/>  "success_threshold": 1,<br/>  "timeout_seconds": 2<br/>}</pre> | no |
 | <a name="input_max_replicas"></a> [max\_replicas](#input\_max\_replicas) | Maximum number of replicas for the deployment | `number` | `5` | no |
+| <a name="input_max_surge"></a> [max\_surge](#input\_max\_surge) | Maximum number of pods that can be scheduled above the desired number of pods. | `string` | `"25%"` | no |
+| <a name="input_max_unavailable"></a> [max\_unavailable](#input\_max\_unavailable) | Maximum number of pods that can be unavailable during the update | `string` | `"25%"` | no |
 | <a name="input_min_replicas"></a> [min\_replicas](#input\_min\_replicas) | Minimum number of replicas for the deployment | `number` | `3` | no |
 | <a name="input_namespace"></a> [namespace](#input\_namespace) | The Kubernetes namespace where the deployment will be created | `string` | `"internal"` | no |
+| <a name="input_node_pool"></a> [node\_pool](#input\_node\_pool) | The pool name the workload will run on. | `string` | `"standard4"` | no |
 | <a name="input_project"></a> [project](#input\_project) | The default project. | `string` | n/a | yes |
 | <a name="input_readiness_probe"></a> [readiness\_probe](#input\_readiness\_probe) | Configuration for readiness probe | <pre>object({<br/>    path                  = optional(string)<br/>    port                  = optional(number)<br/>    initial_delay_seconds = optional(number)<br/>    period_seconds        = optional(number)<br/>    timeout_seconds       = optional(number)<br/>    failure_threshold     = optional(number)<br/>    success_threshold     = optional(number)<br/>  })</pre> | <pre>{<br/>  "failure_threshold": 3,<br/>  "initial_delay_seconds": 10,<br/>  "path": "/readyz",<br/>  "period_seconds": 10,<br/>  "port": 8080,<br/>  "success_threshold": 1,<br/>  "timeout_seconds": 2<br/>}</pre> | no |
 | <a name="input_resources"></a> [resources](#input\_resources) | Resource requests and limits | <pre>object({<br/>    requests = object({<br/>      cpu    = string<br/>      memory = string<br/>    })<br/>    limits = object({<br/>      cpu    = string<br/>      memory = string<br/>    })<br/>  })</pre> | <pre>{<br/>  "limits": {<br/>    "cpu": "500m",<br/>    "memory": "128Mi"<br/>  },<br/>  "requests": {<br/>    "cpu": "250m",<br/>    "memory": "64Mi"<br/>  }<br/>}</pre> | no |
@@ -53,6 +56,7 @@
 | <a name="input_secret_env_vars"></a> [secret\_env\_vars](#input\_secret\_env\_vars) | List of environment that are set as secret variables for the deployment. These are stored in K8s and not in GSM | `map(any)` | `{}` | no |
 | <a name="input_service_account_name"></a> [service\_account\_name](#input\_service\_account\_name) | The name of the service account to use for the deployment | `string` | n/a | yes |
 | <a name="input_team"></a> [team](#input\_team) | The team that owns the deployment | `string` | n/a | yes |
+| <a name="input_topology_spread"></a> [topology\_spread](#input\_topology\_spread) | Configuration for topology spread | <pre>object({<br/>    max_skew           = optional(number)<br/>    topology_key       = optional(string)<br/>    when_unsatisfiable = optional(string)<br/>  })</pre> | <pre>{<br/>  "max_skew": 1,<br/>  "topology_key": "kubernetes.io/hostname",<br/>  "when_unsatisfiable": "ScheduleAnyway"<br/>}</pre> | no |
 | <a name="input_wait_for_rollout"></a> [wait\_for\_rollout](#input\_wait\_for\_rollout) | Wait for the rollout of the deployment to complete. | `bool` | `true` | no |
 
 ## Outputs
@@ -61,3 +65,4 @@
 |------|-------------|
 | <a name="output_name"></a> [name](#output\_name) | The name of the deployment |
 | <a name="output_service_account"></a> [service\_account](#output\_service\_account) | The name of the service account |
+| <a name="output_service_account_fqn"></a> [service\_account\_fqn](#output\_service\_account\_fqn) | The fully qualified name of the service account |
