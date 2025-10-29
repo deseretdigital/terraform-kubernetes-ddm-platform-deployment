@@ -27,7 +27,7 @@ A flexible Terraform module for creating Kubernetes Deployments in any Kubernete
 ```hcl
 module "my_app" {
   source  = "deseretdigital/ddm-platform-deployment/kubernetes"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   # Required
   application_name    = "my-application"
@@ -58,7 +58,7 @@ module "my_app" {
 ```hcl
 module "my_app" {
   source  = "deseretdigital/ddm-platform-deployment/kubernetes"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   application_name    = "my-application"
   application_version = "v1.2.3"
@@ -84,7 +84,7 @@ module "my_app" {
 ```hcl
 module "my_app" {
   source  = "deseretdigital/ddm-platform-deployment/kubernetes"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   application_name    = "my-application"
   application_version = "v1.2.3"
@@ -104,7 +104,7 @@ module "my_app" {
 ```hcl
 module "my_app" {
   source  = "deseretdigital/ddm-platform-deployment/kubernetes"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   application_name    = "my-application"
   application_version = "v1.2.3"
@@ -126,7 +126,7 @@ module "my_app" {
 ```hcl
 module "my_app" {
   source  = "deseretdigital/ddm-platform-deployment/kubernetes"
-  version = "~> 3.0"
+  version = "~> 4.0"
 
   application_name    = "my-application"
   application_version = "v1.2.3"
