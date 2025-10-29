@@ -246,3 +246,33 @@ variable "enable_neg_annotation" {
   type        = bool
   default     = false
 }
+
+variable "gcp_service_account_description" {
+  description = "Description for the GCP service account created by workload identity"
+  type        = string
+  default     = null
+}
+
+variable "automount_service_account_token" {
+  description = "Whether to automount the service account token in pods. Set to false for enhanced security when using workload identity."
+  type        = bool
+  default     = true
+}
+
+variable "use_existing_gcp_sa" {
+  description = "Use an existing GCP service account instead of creating a new one. Provide the email in 'existing_gcp_sa_email'."
+  type        = bool
+  default     = false
+}
+
+variable "existing_gcp_sa_email" {
+  description = "Email of existing GCP service account to use with workload identity (when use_existing_gcp_sa is true)"
+  type        = string
+  default     = null
+}
+
+variable "gke_location" {
+  description = "The location (region or zone) of the GKE cluster. Used for regional/zonal workload identity configuration."
+  type        = string
+  default     = null
+}

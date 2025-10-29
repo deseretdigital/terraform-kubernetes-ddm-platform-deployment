@@ -15,9 +15,10 @@ A flexible Terraform module for creating Kubernetes Deployments in any Kubernete
 
 ## Compatibility
 
-- **Terraform**: >= 1.0
+- **Terraform**: >= 1.3
 - **Kubernetes Provider**: ~> 2.35
-- **Google Provider**: ~> 6.0 (optional, only needed for Workload Identity)
+- **Google Provider**: ~> 7.0 (optional, only needed for Workload Identity)
+- **Workload Identity Module**: ~> 41.0
 
 ## Usage
 
@@ -67,10 +68,34 @@ module "my_app" {
   # Enable Workload Identity
   project             = "my-gcp-project"
   gke_cluster_name    = "my-cluster"
+  gke_location        = "us-central1"  # Optional: specify region/zone
   roles               = [
     "roles/secretmanager.secretAccessor",
     "roles/cloudtrace.agent"
   ]
+  
+  # Optional: Enhanced security - don't automount token
+  automount_service_account_token = false
+}
+```
+
+### With Existing GCP Service Account
+
+```hcl
+module "my_app" {
+  source  = "deseretdigital/ddm-platform-deployment/kubernetes"
+  version = "~> 3.0"
+
+  application_name    = "my-application"
+  application_version = "v1.2.3"
+  container_image     = "gcr.io/my-project/my-app:v1.2.3"
+  team                = "platform"
+
+  # Use existing GCP service account
+  project                 = "my-gcp-project"
+  gke_cluster_name        = "my-cluster"
+  use_existing_gcp_sa     = true
+  existing_gcp_sa_email   = "my-existing-sa@my-project.iam.gserviceaccount.com"
 }
 ```
 
