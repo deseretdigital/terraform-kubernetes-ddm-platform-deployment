@@ -216,7 +216,7 @@ module "deployment_workload_identity" {
 ## Backwards Compatibility
 
 ### No Breaking Changes
-All new variables have sensible defaults that maintain v2.x behavior:
+All new variables have sensible defaults that maintain v3.x behavior:
 - `use_existing_gcp_sa = false` (create new SA)
 - `automount_service_account_token = true` (mount token)
 - `gke_location = null` (optional)

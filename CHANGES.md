@@ -291,7 +291,7 @@ gke_location = "us-central1"  # or "us-central1-a" for zonal
 
 ## Backwards Compatibility
 
-To maintain v2.x behavior, users should add these to their module calls:
+To maintain v3.x behavior, users should add these to their module calls:
 ```hcl
 node_pool = "standard4"
 roles     = ["roles/secretmanager.secretAccessor"]

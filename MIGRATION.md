@@ -183,7 +183,7 @@ host_alias = {
 If you were using the module with mostly default values:
 
 ```hcl
-# Before (v2.x)
+# Before (v3.x)
 module "deployment" {
   source = "..."
   
@@ -208,7 +208,7 @@ module "deployment" {
   service_account_name = "myapp-sa"
   team                = "platform"
   
-  # Add these to maintain v2.x behavior
+  # Add these to maintain v3.x behavior
   node_pool = "standard4"
   roles     = ["roles/secretmanager.secretAccessor"]
   
