@@ -143,9 +143,9 @@ module "my_app" {
 
 This module also includes a submodule for creating Kubernetes CronJobs. See [modules/cronjobs/README.md](./modules/cronjobs/README.md) for details.
 
-## Migration from v2.x
+## Migration from v3.x
 
-If you're upgrading from version 2.x, please see [MIGRATION.md](./MIGRATION.md) for a detailed migration guide.
+If you're upgrading from version 3.x, please see [MIGRATION.md](./MIGRATION.md) for a detailed migration guide.
 
 ### Key Breaking Changes
 
