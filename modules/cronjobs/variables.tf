@@ -108,19 +108,27 @@ variable "deployment_service_type" {
 }
 
 variable "roles" {
-  description = "The roles to apply to the service account for the deployment"
+  description = "The IAM roles to apply to the service account for the deployment. Only used when workload identity is enabled."
   type        = list(string)
-  default     = ["roles/secretmanager.secretAccessor"]
+  default     = []
 }
 
 variable "project" {
-  description = "The default project."
+  description = "The GCP project ID. Required when using workload identity."
   type        = string
+  default     = null
 }
 
 variable "gke_cluster_name" {
-  description = "The name of the GKE cluster where the resources will be deployed"
+  description = "The name of the GKE cluster. Required when using workload identity."
   type        = string
+  default     = null
+}
+
+variable "service_account_name" {
+  description = "The name of the service account to use for workload identity. If not provided, defaults to '{application_name}-sa'."
+  type        = string
+  default     = null
 }
 
 variable "schedule" {
@@ -131,4 +139,45 @@ variable "schedule" {
 variable "timezone" {
   type    = string
   default = "UTC"
+}
+
+variable "observability_config" {
+  description = "Configuration for observability integrations (e.g., Datadog). Set to null to disable."
+  type = object({
+    agent_host_env_vars = optional(list(string), ["DD_AGENT_HOST", "DD_TRACE_AGENT_HOSTNAME"])
+    service_name_prefix = optional(string, "")
+    service_env_var     = optional(string, "DD_SERVICE")
+    version_env_var     = optional(string, "DD_VERSION")
+  })
+  default = null
+}
+
+variable "gcp_service_account_description" {
+  description = "Description for the GCP service account created by workload identity"
+  type        = string
+  default     = null
+}
+
+variable "automount_service_account_token" {
+  description = "Whether to automount the service account token in pods. Set to false for enhanced security when using workload identity."
+  type        = bool
+  default     = true
+}
+
+variable "use_existing_gcp_sa" {
+  description = "Use an existing GCP service account instead of creating a new one. Provide the email in 'existing_gcp_sa_email'."
+  type        = bool
+  default     = false
+}
+
+variable "existing_gcp_sa_email" {
+  description = "Email of existing GCP service account to use with workload identity (when use_existing_gcp_sa is true)"
+  type        = string
+  default     = null
+}
+
+variable "gke_location" {
+  description = "The location (region or zone) of the GKE cluster. Used for regional/zonal workload identity configuration."
+  type        = string
+  default     = null
 }
