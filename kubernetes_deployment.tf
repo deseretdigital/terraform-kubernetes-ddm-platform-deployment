@@ -71,21 +71,27 @@ resource "kubernetes_deployment" "platform_deployment" {
       }
 
       spec {
-        service_account_name = module.deployment_workload_identity.k8s_service_account_name
+        service_account_name = local.enable_workload_identity ? module.deployment_workload_identity[0].k8s_service_account_name : kubernetes_service_account.basic[0].metadata[0].name
 
-        host_aliases {
-          hostnames = var.host_alias.hostnames
-          ip        = var.host_alias.ip
+        dynamic "host_aliases" {
+          for_each = var.host_alias != null ? [var.host_alias] : []
+          content {
+            hostnames = host_aliases.value.hostnames
+            ip        = host_aliases.value.ip
+          }
         }
 
-        affinity {
-          node_affinity {
-            required_during_scheduling_ignored_during_execution {
-              node_selector_term {
-                match_expressions {
-                  key      = "pool"
-                  operator = "In"
-                  values   = [var.node_pool]
+        dynamic "affinity" {
+          for_each = var.node_pool != null ? [1] : []
+          content {
+            node_affinity {
+              required_during_scheduling_ignored_during_execution {
+                node_selector_term {
+                  match_expressions {
+                    key      = "pool"
+                    operator = "In"
+                    values   = [var.node_pool]
+                  }
                 }
               }
             }
@@ -98,7 +104,7 @@ resource "kubernetes_deployment" "platform_deployment" {
           when_unsatisfiable = local.topology_spread.when_unsatisfiable
           label_selector {
             match_labels = {
-              "app.kubernetes.io/instance" = "var.application_name"
+              app = var.application_name
             }
           }
         }
@@ -138,37 +144,35 @@ resource "kubernetes_deployment" "platform_deployment" {
           # Static environment variables
           ##########################################
 
-          # Set the DD_AGENT_HOST environment variable to the host IP address.
-          env {
-            name = "DD_AGENT_HOST"
-
-            value_from {
-              field_ref {
-                field_path = "status.hostIP"
+          # Observability agent host configuration (e.g., Datadog)
+          dynamic "env" {
+            for_each = var.observability_config != null ? var.observability_config.agent_host_env_vars : []
+            content {
+              name = env.value
+              value_from {
+                field_ref {
+                  field_path = "status.hostIP"
+                }
               }
             }
           }
 
-          # Nodejs uses the DD_TRACE_AGENT_HOSTNAME environment variable to set 
-          # the agent instead of DD_AGENT_HOST. We can set both without any negative effects.
-          env {
-            name = "DD_TRACE_AGENT_HOSTNAME"
-
-            value_from {
-              field_ref {
-                field_path = "status.hostIP"
-              }
+          # Observability service name
+          dynamic "env" {
+            for_each = var.observability_config != null && var.observability_config.service_env_var != null ? [1] : []
+            content {
+              name  = var.observability_config.service_env_var
+              value = var.observability_config.service_name_prefix != "" ? "${var.observability_config.service_name_prefix}${var.application_name}" : var.application_name
             }
           }
 
-          env {
-            name  = "DD_SERVICE"
-            value = "ddm-platform-${var.application_name}"
-          }
-
-          env {
-            name  = "DD_VERSION"
-            value = var.application_version
+          # Observability version
+          dynamic "env" {
+            for_each = var.observability_config != null && var.observability_config.version_env_var != null ? [1] : []
+            content {
+              name  = var.observability_config.version_env_var
+              value = var.application_version
+            }
           }
 
           port {

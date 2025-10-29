@@ -24,7 +24,7 @@ resource "kubernetes_cron_job_v1" "cron" {
           metadata {}
 
           spec {
-            service_account_name = module.deployment_workload_identity.k8s_service_account_name
+            service_account_name = local.enable_workload_identity ? module.deployment_workload_identity[0].k8s_service_account_name : kubernetes_service_account.basic[0].metadata[0].name
 
             restart_policy = "Never"
 
@@ -45,13 +45,15 @@ resource "kubernetes_cron_job_v1" "cron" {
               # Static environment variables
               ##########################################
 
-              # Set the DD_AGENT_HOST environment variable to the host IP address.
-              env {
-                name = "DD_AGENT_HOST"
-
-                value_from {
-                  field_ref {
-                    field_path = "status.hostIP"
+              # Observability agent host configuration (e.g., Datadog)
+              dynamic "env" {
+                for_each = var.observability_config != null ? var.observability_config.agent_host_env_vars : []
+                content {
+                  name = env.value
+                  value_from {
+                    field_ref {
+                      field_path = "status.hostIP"
+                    }
                   }
                 }
               }
@@ -72,26 +74,22 @@ resource "kubernetes_cron_job_v1" "cron" {
                 }
               }
 
-              # Nodejs uses the DD_TRACE_AGENT_HOSTNAME environment variable to set 
-              # the agent instead of DD_AGENT_HOST. We can set both without any negative effects.
-              env {
-                name = "DD_TRACE_AGENT_HOSTNAME"
-
-                value_from {
-                  field_ref {
-                    field_path = "status.hostIP"
-                  }
+              # Observability service name
+              dynamic "env" {
+                for_each = var.observability_config != null && var.observability_config.service_env_var != null ? [1] : []
+                content {
+                  name  = var.observability_config.service_env_var
+                  value = var.observability_config.service_name_prefix != "" ? "${var.observability_config.service_name_prefix}${var.application_name}" : var.application_name
                 }
               }
 
-              env {
-                name  = "DD_SERVICE"
-                value = "ddm-platform-${var.application_name}"
-              }
-
-              env {
-                name  = "DD_VERSION"
-                value = var.application_version
+              # Observability version
+              dynamic "env" {
+                for_each = var.observability_config != null && var.observability_config.version_env_var != null ? [1] : []
+                content {
+                  name  = var.observability_config.version_env_var
+                  value = var.application_version
+                }
               }
 
               # Resource limits and requests for the container. This is used by

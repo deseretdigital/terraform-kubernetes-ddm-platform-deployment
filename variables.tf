@@ -201,28 +201,48 @@ variable "deployment_service_type" {
 }
 
 variable "roles" {
-  description = "The roles to apply to the service account for the deployment"
+  description = "The IAM roles to apply to the service account for the deployment. Only used when workload identity is enabled."
   type        = list(string)
-  default     = ["roles/secretmanager.secretAccessor"]
+  default     = []
 }
 
 variable "project" {
-  description = "The default project."
+  description = "The GCP project ID. Required when using workload identity."
   type        = string
+  default     = null
 }
 
 variable "gke_cluster_name" {
-  description = "The name of the GKE cluster where the resources will be deployed"
+  description = "The name of the GKE cluster. Required when using workload identity."
   type        = string
+  default     = null
 }
 
 variable "service_account_name" {
-  description = "The name of the service account to use for the deployment"
+  description = "The name of the service account to use for workload identity. If not provided, defaults to '{application_name}-sa'."
   type        = string
+  default     = null
 }
 
 variable "node_pool" {
-  description = "The pool name the workload will run on."
+  description = "The pool name the workload will run on. If null, no node affinity will be set."
   type        = string
-  default     = "standard4"
+  default     = null
+}
+
+variable "observability_config" {
+  description = "Configuration for observability integrations (e.g., Datadog). Set to null to disable."
+  type = object({
+    agent_host_env_vars = optional(list(string), ["DD_AGENT_HOST", "DD_TRACE_AGENT_HOSTNAME"])
+    service_name_prefix = optional(string, "")
+    service_env_var     = optional(string, "DD_SERVICE")
+    version_env_var     = optional(string, "DD_VERSION")
+  })
+  default = null
+}
+
+variable "enable_neg_annotation" {
+  description = "Enable Google Cloud NEG (Network Endpoint Group) annotation on the service"
+  type        = bool
+  default     = false
 }

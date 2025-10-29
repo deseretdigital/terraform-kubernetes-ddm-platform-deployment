@@ -6,7 +6,7 @@ terraform {
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.0"
+      version = "~> 2.35"
     }
   }
 }
@@ -20,5 +20,11 @@ locals {
     },
     var.labels
   )
+
+  # Compute service account name with default
+  service_account_name = var.service_account_name != null ? var.service_account_name : "${var.application_name}-sa"
+
+  # Determine if workload identity should be enabled
+  enable_workload_identity = var.project != null && var.gke_cluster_name != null
 }
 
