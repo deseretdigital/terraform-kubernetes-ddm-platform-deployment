@@ -222,7 +222,7 @@ variable "service_account_name" {
 }
 
 variable "node_pool" {
-  description = "The pool name the workload will run on."
-  type        = string
-  default     = "standard4"
+  description = "List of target GKE node pool labels (e.g., preemptive32, standard4)."
+  type        = list(string)
+  default     = []
 }
