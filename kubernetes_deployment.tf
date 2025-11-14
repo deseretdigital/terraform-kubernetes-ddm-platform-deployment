@@ -82,7 +82,7 @@ resource "kubernetes_deployment" "platform_deployment" {
         }
 
         dynamic "affinity" {
-          for_each = var.node_pool != null ? [1] : []
+          for_each = var.node_pool != null && length(var.node_pool) > 0 ? [1] : []
           content {
             node_affinity {
               required_during_scheduling_ignored_during_execution {
@@ -90,7 +90,7 @@ resource "kubernetes_deployment" "platform_deployment" {
                   match_expressions {
                     key      = "pool"
                     operator = "In"
-                    values   = [var.node_pool]
+                    values   = var.node_pool
                   }
                 }
               }
