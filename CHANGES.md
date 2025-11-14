@@ -288,6 +288,7 @@ gke_location = "us-central1"  # or "us-central1-a" for zonal
 3. **roles** - Now defaults to `[]` instead of `["roles/secretmanager.secretAccessor"]`
 4. **project/gke_cluster_name** - Now optional (null by default)
 5. **enable_neg_annotation** - New variable, defaults to `false`
+6. **node_pool** - Change from string to list. This will allow us to use multiple node pools
 
 ## Backwards Compatibility
 

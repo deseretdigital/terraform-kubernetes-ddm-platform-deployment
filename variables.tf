@@ -225,9 +225,9 @@ variable "service_account_name" {
 }
 
 variable "node_pool" {
-  description = "The pool name the workload will run on. If null, no node affinity will be set."
-  type        = string
-  default     = null
+  description = "List of target GKE node pool labels (e.g., preemptive32, standard4)."
+  type        = list(string)
+  default     = []
 }
 
 variable "observability_config" {
