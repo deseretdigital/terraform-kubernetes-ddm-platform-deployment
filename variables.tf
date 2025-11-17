@@ -201,24 +201,27 @@ variable "deployment_service_type" {
 }
 
 variable "roles" {
-  description = "The roles to apply to the service account for the deployment"
+  description = "The IAM roles to apply to the service account for the deployment. Only used when workload identity is enabled."
   type        = list(string)
-  default     = ["roles/secretmanager.secretAccessor"]
+  default     = []
 }
 
 variable "project" {
-  description = "The default project."
+  description = "The GCP project ID. Required when using workload identity."
   type        = string
+  default     = null
 }
 
 variable "gke_cluster_name" {
-  description = "The name of the GKE cluster where the resources will be deployed"
+  description = "The name of the GKE cluster. Required when using workload identity."
   type        = string
+  default     = null
 }
 
 variable "service_account_name" {
-  description = "The name of the service account to use for the deployment"
+  description = "The name of the service account to use for workload identity. If not provided, defaults to '{application_name}-sa'."
   type        = string
+  default     = null
 }
 
 variable "node_pool" {
