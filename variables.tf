@@ -177,6 +177,12 @@ variable "max_unavailable" {
   default     = "25%"
 }
 
+variable "termination_grace_period_seconds" {
+  description = "Seconds the pod is given to shut down gracefully after SIGTERM before the kubelet sends SIGKILL. Raise this for workers that need to drain long-running, in-flight work on rollout. Defaults to the Kubernetes default of 30."
+  type        = number
+  default     = 30
+}
+
 variable "autoscaler" {
   description = "Configuration for the autoscaler"
   type = object({

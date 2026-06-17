@@ -22,6 +22,9 @@ module "ddm-platform-deployment" {
   max_surge           = {YOUR_MAX_PODS_SCHEDULED_DURING_UPDATE}
   max_unavailable     = {YOUR_MAX_PODS_UNAVAILABLE_DURING_UPDATED}
 
+  # Seconds to drain in-flight work on SIGTERM before SIGKILL (default 30).
+  termination_grace_period_seconds = {GRACE_PERIOD_SECONDS}
+
   
 }
 ```
