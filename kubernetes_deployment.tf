@@ -160,7 +160,7 @@ resource "kubernetes_deployment" "platform_deployment" {
 
           # Observability service name
           dynamic "env" {
-            for_each = var.observability_config != null && var.observability_config.service_env_var != null ? [1] : []
+            for_each = try(var.observability_config.service_env_var, null) != null ? [1] : []
             content {
               name  = var.observability_config.service_env_var
               value = var.observability_config.service_name_prefix != "" ? "${var.observability_config.service_name_prefix}${var.application_name}" : var.application_name
@@ -169,7 +169,7 @@ resource "kubernetes_deployment" "platform_deployment" {
 
           # Observability version
           dynamic "env" {
-            for_each = var.observability_config != null && var.observability_config.version_env_var != null ? [1] : []
+            for_each = try(var.observability_config.version_env_var, null) != null ? [1] : []
             content {
               name  = var.observability_config.version_env_var
               value = var.application_version
