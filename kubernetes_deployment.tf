@@ -71,7 +71,8 @@ resource "kubernetes_deployment" "platform_deployment" {
       }
 
       spec {
-        service_account_name = local.enable_workload_identity ? module.deployment_workload_identity[0].k8s_service_account_name : kubernetes_service_account.basic[0].metadata[0].name
+        service_account_name             = local.enable_workload_identity ? module.deployment_workload_identity[0].k8s_service_account_name : kubernetes_service_account.basic[0].metadata[0].name
+        termination_grace_period_seconds = var.termination_grace_period_seconds
 
         dynamic "host_aliases" {
           for_each = var.host_alias != null ? [var.host_alias] : []
