@@ -6,9 +6,9 @@ resource "kubernetes_service" "web_servce" {
   metadata {
     name      = "${var.application_name}-svc"
     namespace = data.kubernetes_namespace.deployment_namespace.id
-    annotations = var.enable_neg_annotation ? {
+    annotations = {
       "cloud.google.com/neg" = "{\"ingress\": true}"
-    } : {}
+    }
     labels = local.labels
   }
 
