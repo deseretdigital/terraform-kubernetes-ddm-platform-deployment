@@ -186,4 +186,10 @@ resource "kubernetes_deployment" "platform_deployment" {
 
     min_ready_seconds = 60
   }
+
+  # The horizontal pod autoscaler owns the replica count. Without this, each
+  # apply resets the live replicas to min_replicas.
+  lifecycle {
+    ignore_changes = [spec[0].replicas]
+  }
 }
